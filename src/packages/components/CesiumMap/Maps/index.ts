@@ -1,6 +1,4 @@
 import { baseMapConfig } from './baseMap/index'
+import { SCMapConfig } from './SCMap'
 
-export default [
-    baseMapConfig
-
-]
+export default [baseMapConfig, SCMapConfig]

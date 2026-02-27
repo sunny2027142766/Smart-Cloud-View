@@ -1,0 +1,105 @@
+{
+  "version": 8,
+  "sources": {
+    "base-layer": {
+      "type": "raster",
+      "tiles": ["http://192.168.13.28:4000/map/tianditu_vec_w_merge/{z}/{x}/{y}.png"],
+      "tileSize": 256,
+      "minZoom": 1,
+      "maxZoom": 14
+    },
+    "hillshadeSource": {
+      "type": "raster-dem",
+      "tiles": ["http://192.168.13.28:4000/map/mapbox-dem-v4/{z}/{x}/{y}.png"],
+      "tileSize": 256
+    },
+    "china_provinces": {
+      "type": "vector",
+      "tiles": ["http://192.168.13.28:4000/map/china_provinces/{z}/{x}/{y}.pbf"],
+      "tileSize": 512,
+      "minzoom": 3,
+      "maxzoom": 17,
+      "volatile": true
+    },
+    "china_cities": {
+      "type": "vector",
+      "tiles": ["http://192.168.13.28:4000/map/china_cities/{z}/{x}/{y}.pbf"],
+      "tileSize": 512,
+      "minzoom": 3,
+      "maxzoom": 17,
+      "volatile": true
+    },
+    "china_counties": {
+      "type": "vector",
+      "tiles": ["http://192.168.13.28:4000/map/china_counties/{z}/{x}/{y}.pbf"],
+      "tileSize": 512,
+      "minzoom": 3,
+      "maxzoom": 17,
+      "volatile": true
+    }
+  },
+  "layers": [
+    {
+      "id": "base-layer",
+      "type": "raster",
+      "source": "base-layer",
+      "maxZoom": 14
+    },
+    {
+      "id": "hills",
+      "type": "hillshade",
+      "source": "hillshadeSource",
+      "maxZoom": 14,
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "hillshade-shadow-color": "#473B24",
+        "hillshade-exaggeration": 1.0
+      }
+    },
+    {
+      "id": "china_counties_highlight",
+      "source": "china_counties",
+      "source-layer": "china_counties",
+      "type": "line",
+      "layout": {
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-color": "#ff0000",
+        "line-width": 3
+      },
+      "filter": ["==", "code", ""]
+    },
+    {
+      "id": "china_cities_highlight",
+      "source": "china_cities",
+      "source-layer": "china_cities",
+      "type": "line",
+      "layout": {
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-color": "#ff0000",
+        "line-width": ["step", ["zoom"], 3, 12, 2]
+      },
+      "filter": ["==", "code", ""]
+    },
+    {
+      "id": "china_provinces_highlight",
+      "source": "china_provinces",
+      "source-layer": "china_provinces",
+      "type": "line",
+      "layout": {
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-color": "red",
+        "line-width": ["step", ["zoom"], 3, 12, 2]
+      },
+      "filter": ["==", "code", ""]
+    }
+  ],
+  "glyphs": "http://192.168.13.28:4000/map/font/{fontstack}/{range}.pbf"
+}
