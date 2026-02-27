@@ -10,5 +10,5 @@ export const SCMapConfig: ConfigType = {
   categoryName: ChatCategoryEnumName.Maps,
   package: PackagesCategoryEnum.CesiumMap,
   chartFrame: ChartFrameEnum.COMMON,
-  image: 'baseMap.jpg'
+  image: 'SCMap.jpg'
 }

@@ -31,6 +31,12 @@ onBeforeUnmount(() => {
   map?.remove()
 })
 
+const applyProjection = () => {
+  map?.setProjection({
+    type: option.projection
+  })
+}
+
 /**
  * 初始化地图
  */
@@ -39,9 +45,6 @@ const initMap = () => {
     container: mapContainer.value as HTMLElement,
     style: `/styles/${option.styleName}.json`,
 
-    projection: option.projection,
-
-    // 视角
     center: option.center,
     zoom: option.zoom,
     pitch: option.pitch,
@@ -61,6 +64,10 @@ const initMap = () => {
     // 性能
     attributionControl: option.attributionControl,
     canvasContextAttributes: option.canvasContextAttributes
+  })
+
+  map.on('style.load', () => {
+    applyProjection()
   })
 }
 
@@ -100,18 +107,17 @@ watch(
 
     Object.assign(option, newData)
 
-    if (oldProjection !== option.projection) {
-      map?.setProjection({
-        type: option.projection
-      })
+    if (oldStyle !== option.styleName) {
+      map?.setStyle(`/styles/${option.styleName}.json`)
       return
     }
 
-    if (oldStyle !== option.styleName) {
-      map?.setStyle(`/styles/${option.styleName}.json`)
-    } else {
-      updateMapSetting()
+    if (oldProjection !== option.projection) {
+      applyProjection()
+      return
     }
+
+    updateMapSetting()
   },
   { immediate: true, deep: true }
 )
